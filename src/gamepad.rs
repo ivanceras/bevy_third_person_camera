@@ -127,8 +127,9 @@ pub fn orbit_gamepad(
 
         let new_rotation = cam_transform.rotation * pitch;
 
+        let cam_up = cam_transform.up();
         // check if new rotation will cause camera to go beyond the 180 degree vertical bounds
-        let up_vector = new_rotation * Vec3::Y;
+        let up_vector = new_rotation * cam_up;
         if up_vector.y > 0.0 {
             cam_transform.rotation = new_rotation;
         }

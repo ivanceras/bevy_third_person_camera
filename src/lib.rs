@@ -54,7 +54,7 @@ impl Plugin for ThirdPersonCameraPlugin {
 ///     ));
 /// }
 /// ```
-#[derive(Component)]
+#[derive(Component, Debug, Clone)]
 pub struct ThirdPersonCamera {
     /// Flag to indicate if the aim functionality is turned on.
     /// Default is false
@@ -151,6 +151,7 @@ impl Default for ThirdPersonCamera {
 }
 
 /// Sets the zoom bounds (min & max)
+#[derive(Debug, Clone)]
 pub struct Zoom {
     pub min: f32,
     pub max: f32,
@@ -171,6 +172,7 @@ impl Zoom {
 
 /// Offset the camera behind the player. For example, an offset value of (0.5, 0.25) will
 /// place the camera closer the player's right shoulder
+#[derive(Debug, Clone)]
 pub struct Offset {
     pub offset: (f32, f32),
     offset_copy: (f32, f32),
@@ -216,7 +218,7 @@ pub struct GamepadResource(pub Gamepad);
 ///    ));
 /// }
 /// ```
-#[derive(Component)]
+#[derive(Component, Debug, Clone)]
 pub struct CustomGamepadSettings {
     /// The aim button binding.
     /// Default is GamepadButton::new(gamepad, GamepadButtonType::LeftTrigger2)
@@ -326,7 +328,9 @@ fn aim(
         let Ok(mut player_transform) = player_q.get_single_mut() else {
             return;
         };
-        player_transform.look_to(*cam_transform.forward(), Vec3::Y);
+        let player_up = player_transform.up();
+        // ideally the up of the planet
+        player_transform.look_to(*cam_transform.forward(), player_up);
 
         let desired_zoom = cam.zoom.min * cam.aim_zoom;
 
