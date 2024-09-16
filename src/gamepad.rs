@@ -100,16 +100,8 @@ pub fn orbit_gamepad(
         return;
     }
 
-    let x_axis = GamepadAxis::new(gamepad, GamepadAxisType::RightStickX);
-    let y_axis = GamepadAxis::new(gamepad, GamepadAxisType::RightStickY);
 
-    let deadzone = 0.5;
     let mut rotation = Vec2::ZERO;
-    if let (Some(x), Some(y)) = (axis.get(x_axis), axis.get(y_axis)) {
-        if x.abs() > deadzone || y.abs() > deadzone {
-            rotation = Vec2::new(x, y);
-        }
-    }
 
     if rotation.length_squared() > 0.0 {
         let window = window_q.get_single().unwrap();
